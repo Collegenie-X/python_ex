@@ -2,7 +2,7 @@
 from create_member import CreateMember
 from update_member import UpdateMember
 from delete_member import DeleteMember
-from view_member import ReadMember
+from read_member import ReadMember
 
 def main_program():
     while True:
