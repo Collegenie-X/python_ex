@@ -20,7 +20,7 @@ from fpdf import FPDF
 from io import BytesIO
 import io
 
-from pdf_function import generate_pdf_with_charts
+from pdf_function import generate_pdf_with_charts, get_pdf_base64
 
 
 plt.rcParams["font.family"] = "AppleGothic"  # macOS font that supports Hangul
@@ -234,8 +234,9 @@ if uploaded_file is not None:
     include_monthly_comparison = st.checkbox("월별 손익 분기점 비교", True)
 
     # PDF 다운로드 버튼
-    if st.button("보고서 다운로드"):
-        pdf_data = generate_pdf_with_charts(
+    if st.button("보고서 생성"):
+        # PDF 생성
+        pdf_output = generate_pdf_with_charts(
             df,
             include_sales_trends,
             include_discount_revenue,
@@ -243,9 +244,20 @@ if uploaded_file is not None:
             include_top_products,
             include_monthly_comparison,
         )
+
+        # PDF 미리 보기
+        pdf_base64 = get_pdf_base64(pdf_output)
+
+        # Streamlit에 PDF 미리 보기
+        st.markdown(
+            f'<iframe src="data:application/pdf;base64,{pdf_base64}" width="700" height="500"></iframe>',
+            unsafe_allow_html=True,
+        )
+
+        # 다운로드 버튼
         st.download_button(
-            "PDF로 다운로드",
-            pdf_data,
+            label="PDF로 다운로드",
+            data=pdf_output,
             file_name="shopping_report.pdf",
             mime="application/pdf",
         )

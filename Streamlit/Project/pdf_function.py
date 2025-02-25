@@ -5,6 +5,7 @@ import io
 from fpdf import FPDF
 from io import BytesIO
 import tempfile
+import base64
 import os
 
 plt.rcParams["font.family"] = "AppleGothic"  # macOS 폰트 (또는 NanumGothic 등)
@@ -32,6 +33,11 @@ def insert_image_from_buffer(
     # PDF에 이미지 삽입
     pdf.image(filename, x=x, y=y, w=w, h=h, type=img_type)
     os.remove(filename)  # 임시 파일 삭제
+
+
+def get_pdf_base64(pdf_output):
+    pdf_base64 = base64.b64encode(pdf_output.read()).decode("utf-8")
+    return pdf_base64
 
 
 def generate_pdf_with_charts(
