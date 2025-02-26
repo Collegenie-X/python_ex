@@ -2,16 +2,13 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import altair as alt
 
 from matplotlib import rcParams
 
 
 ##### sudo apt-get install fonts-nanum
 ##### from matplotlib import rcParams
-
-##### # 한글 폰트 설정
-##### rcParams['font.family'] = 'NanumGothic'  # 예시: 나눔고딕 폰트 설정
-##### rcParams['axes.unicode_minus'] = False  # 마이너스 부호 깨짐 방지
 
 
 # 한글 폰트 설정
@@ -24,11 +21,11 @@ st.title("1. 선 그래프 (Line Chart)")
 x = np.arange(0, 10, 0.1)
 y = np.sin(x)
 
-# 선 그래프 그리기
+############ 선 그래프 그리기
 st.line_chart(y)
 
 
-# 멀티 데이터 생성
+#########  멀티 데이터 생성
 data = {
     "Year": [2020, 2021, 2022, 2023],
     "Sales": [100, 150, 120, 170],
@@ -37,12 +34,34 @@ data = {
 
 # 데이터를 Pandas DataFrame으로 변환
 df = pd.DataFrame(data)
+df["Year"] = df["Year"].astype(str)
 
-# Streamlit 기본 차트 사용
+########  Streamlit 기본 차트 사용
 st.line_chart(df.set_index("Year"))
 
 
-# 데이터 생성
+###### 데이터 변환 (Melt 형태로 변경)
+df_melted = df.melt(id_vars=["Year"], var_name="Category", value_name="Value")
+
+# Altair 차트 생성
+chart = (
+    alt.Chart(df_melted)
+    .mark_line(point=True)  # 선과 함께 점 표시
+    .encode(
+        x=alt.X(
+            "Year:O", title="Year", axis=alt.Axis(labelAngle=0)
+        ),  # X축 라벨 가로 정렬
+        y="Value:Q",
+        color="Category:N",  # 범례 추가
+    )
+    .properties(title="Sales and Profit Trends")
+)
+
+# Streamlit에서 차트 출력
+st.altair_chart(chart, use_container_width=True)
+
+
+#####3  데이터 생성
 x = np.arange(0, 10, 0.1)
 y1 = np.sin(x)
 y2 = np.cos(x)
