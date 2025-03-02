@@ -52,9 +52,7 @@ def generate_pdf_with_charts(
     pdf.add_page()
 
     # 폰트 추가 (NanumGothic 예시)
-    pdf.add_font("NanumGothic", "", "./NanumGothic.ttf", uni=True)
-    pdf.set_font("NanumGothic", size=12)
-
+}
     # 보고서 제목
     pdf.cell(0, 10, txt="쇼핑몰 데이터 분석 보고서", ln=True, align="C")
     pdf.ln(5)

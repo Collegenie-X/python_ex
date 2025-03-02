@@ -1,6 +1,7 @@
 # create_member.py
 from member import MemberManager
 
+
 class CreateMember:
     def __init__(self, member_info):
         self.member_info = member_info

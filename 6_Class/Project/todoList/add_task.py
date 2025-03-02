@@ -1,6 +1,7 @@
 # add_task.py
 from task import Task
 
+
 class AddTask:
     def __init__(self, task_name, tasks, index_counter):
         self.task_name = task_name
