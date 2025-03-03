@@ -12,8 +12,13 @@ plt.rcParams["font.family"] = "AppleGothic"  # macOS 폰트 (또는 NanumGothic 
 plt.rcParams["axes.unicode_minus"] = False  # 마이너스 기호 깨짐 방지
 
 
+
 class PDF(FPDF):
-    pass
+    def __init__(self):
+        super().__init__()
+        self.add_font("NanumGothic", "", "./NanumGothic.ttf", uni=True)
+        self.set_font("NanumGothic", "", 12)
+
 
 
 def insert_image_from_buffer(
@@ -50,9 +55,9 @@ def generate_pdf_with_charts(
 ):
     pdf = PDF()
     pdf.add_page()
+    
 
     # 폰트 추가 (NanumGothic 예시)
-}
     # 보고서 제목
     pdf.cell(0, 10, txt="쇼핑몰 데이터 분석 보고서", ln=True, align="C")
     pdf.ln(5)
@@ -197,9 +202,9 @@ def generate_pdf_with_charts(
         pdf.ln(5)
 
     # PDF를 문자열로 반환 후 바이트 변환
-    pdf_str = pdf.output(dest="S")
-    pdf_bytes = pdf_str.encode("latin1")
-    pdf_output = BytesIO(pdf_bytes)
+    pdf_bytes = pdf.output(dest="S")  
+    pdf_output = BytesIO(pdf_bytes)  
     pdf_output.seek(0)
+
 
     return pdf_output
