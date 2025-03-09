@@ -2,33 +2,33 @@
 python, numpy, pandas, data analysitics 
 
 
-### python 확장명 
+## python 확장명 
 -----------------------------
-> .ipynb 
-> .py 
+> - .ipynb 
+> - .py 
 -----------------------------
 
-### python 실행 
+## python 실행 
 -----------------------------
 ```
 python  main.py 
 ```
 
-### Streamlit 실행 
+## Streamlit 실행 
 -----------------------------
 ```
 streamlit run main.py 
 ```
 
 
-### 실행 범위만 실행 
+## 실행 범위만 실행 
 ------------------------------
 ```
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
 
-#### 가상환경 설치 
+## 가상환경 설치 
 --------------------------------
 ```
 pyton3.13 -m venv venv 
