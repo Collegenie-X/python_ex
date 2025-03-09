@@ -20,7 +20,7 @@ from fpdf import FPDF
 from io import BytesIO
 import io
 
-from pdf_function import generate_pdf_with_charts, get_pdf_base64
+from Streamlit.Project.shopping_data.pdf_function import generate_pdf_with_charts, get_pdf_base64
 
 
 plt.rcParams["font.family"] = "AppleGothic"  # macOS font that supports Hangul
