@@ -39,3 +39,13 @@ pyton3.13 -m venv venv
 ```
 pip install -r requirements.txt 
 ```
+
+
+## pip install 
+
+```
+pip freeze > requirements.txt 
+```
+```
+pip install -r requirements.txt 
+```
