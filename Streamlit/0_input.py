@@ -17,7 +17,7 @@ st.write(
 st.title("텍스트 영역 입력 (Text Area)")
 
 ####  텍스트 영역
-feedback = st.text_area("피드백을 남겨주세요:")
+feedback = st.text_area("피드백을 남겨주세요:", height=340)
 
 if feedback:
     st.write("입력된 피드백:", feedback)
@@ -25,22 +25,21 @@ if feedback:
 st.write(
     "------------------------------------------------------------------------------"
 )
+st.divider()
 
 
 st.title("숫자 입력 (슬라이더)")
 ####  숫자 입력
-age = st.number_input("나이를 입력하세요:", min_value=0, max_value=100)
+age = st.number_input("나이를 입력하세요:", min_value=0, max_value=100, step=3)
 
 ####  슬라이더로 범위 입력
-height = st.slider("키를 입력하세요 (cm)", 100, 200, 150)
+height = st.slider("키를 입력하세요 (cm)", 100, 200, 150, step=5)
 
 ####  입력받은 값 출력
 st.write(f"당신의 나이는 [{age}] 세 입니다.")
 st.write(f"당신의 키는 [{height}]cm 입니다.")
 
-st.write(
-    "------------------------------------------------------------------------------"
-)
+st.divider()
 
 
 st.title("버튼")
@@ -55,7 +54,7 @@ st.write(
 
 st.title("숫자 입력 (첫번째,두번째)")
 ####  두 숫자 입력
-num1 = st.number_input("첫 번째 숫자를 입력하세요", 0)
+num1 = st.number_input("첫 번째 숫자를 입력하세요", 10)
 num2 = st.number_input("두 번째 숫자를 입력하세요", 0)
 
 # 버튼 클릭 시 계산
@@ -71,7 +70,7 @@ st.write(
 
 st.title("체크 박스")
 ####  체크박스
-accept_terms = st.checkbox("약관에 동의합니다.")
+accept_terms = st.checkbox("약관에 동의합니다.")  ### boolean
 
 if accept_terms:
     st.write("약관에 동의하셨습니다.")
@@ -110,7 +109,7 @@ st.write(
     "------------------------------------------------------------------------------"
 )
 
-st.title("선택 백스 (multiselect) ")
+st.title("멀티 Select 박스  (multiselect) ")
 
 # 멀티 셀렉트
 selected_fruits = st.multiselect(
