@@ -1,144 +1,105 @@
 import streamlit as st
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import altair as alt
-
+import matplotlib.pyplot as plt
 from matplotlib import rcParams
 
+# 한글 폰트 설정 (Ubuntu 서버 등에서 나눔 폰트 설치 필요)
+rcParams["font.family"] = "AppleGothic"
+rcParams["axes.unicode_minus"] = False
 
-##### sudo apt-get install fonts-nanum
-##### from matplotlib import rcParams
+st.title("📊 다양한 차트 시각화 (Streamlit)")
 
+# 사이드바 메뉴로 차트 선택
+chart_menu = st.sidebar.selectbox(
+    "차트 유형을 선택하세요",
+    ["선 그래프", "막대 그래프", "영역 그래프", "히스토그램", "산점도"],
+)
 
-# 한글 폰트 설정
-rcParams["font.family"] = "NanumGothic"  # 예시: 나눔고딕 폰트 설정
-rcParams["axes.unicode_minus"] = False  # 마이너스 부호 깨짐 방지
-
-st.title("1. 선 그래프 (Line Chart)")
-
-# 데이터 생성
+# 공통 데이터 생성
 x = np.arange(0, 10, 0.1)
-y = np.sin(x)
+y1 = np.sin(x)
+y2 = np.cos(x)
 
-############ 선 그래프 그리기
-st.line_chart(y)
+# 1. 선 그래프
+if chart_menu == "선 그래프":
+    st.subheader("🔹 선 그래프")
 
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.plot(x, y1, label="sin(x)", marker="o")
+    ax.plot(x, y2, label="cos(x)", marker="x")
+    ax.set_title("sin(x) 및 cos(x) 선 그래프")
+    ax.set_xlabel("X축")
+    ax.set_ylabel("Y축")
+    ax.legend()
+    ax.grid(True)
 
-#########  멀티 데이터 생성
-data = {
-    "Year": [2020, 2021, 2022, 2023],
-    "Sales": [100, 150, 120, 170],
-    "Profit": [30, 40, 35, 45],
-}
+    st.pyplot(fig)
 
-# 데이터를 Pandas DataFrame으로 변환
-df = pd.DataFrame(data)
-df["Year"] = df["Year"].astype(str)
+# 2. 막대 그래프
+elif chart_menu == "막대 그래프":
+    st.subheader("🔸 막대 그래프")
 
-########  Streamlit 기본 차트 사용
-st.line_chart(df.set_index("Year"))
+    data = pd.DataFrame({"Category": ["A", "B", "C", "D"], "Value": [23, 45, 56, 78]})
+    st.bar_chart(data.set_index("Category"))
 
+    st.write("Matplotlib로 표현한 막대 그래프")
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.bar(data["Category"], data["Value"], color="skyblue")
+    ax.set_title("카테고리별 값 비교")
+    ax.set_xlabel("카테고리")
+    ax.set_ylabel("값")
+    ax.grid(axis="y")
 
-###### 데이터 변환 (Melt 형태로 변경)
-df_melted = df.melt(id_vars=["Year"], var_name="Category", value_name="Value")
+    st.pyplot(fig)
 
-# Altair 차트 생성
-chart = (
-    alt.Chart(df_melted)
-    .mark_line(point=True)  # 선과 함께 점 표시
-    .encode(
-        x=alt.X(
-            "Year:O", title="Year", axis=alt.Axis(labelAngle=0)
-        ),  # X축 라벨 가로 정렬
-        y="Value:Q",
-        color="Category:N",  # 범례 추가
+# 3. 영역 그래프
+elif chart_menu == "영역 그래프":
+    st.subheader("🔺 영역 그래프")
+
+    df_area = pd.DataFrame({"sin(x)": y1, "cos(x)": y2}, index=x)
+    st.area_chart(df_area)
+
+# 4. 히스토그램
+elif chart_menu == "히스토그램":
+    st.subheader("📈 히스토그램")
+
+    data = np.random.randn(1000)
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.hist(data, bins=30, color="purple", alpha=0.7)
+    ax.set_title("정규 분포 히스토그램")
+    ax.set_xlabel("값")
+    ax.set_ylabel("빈도")
+    ax.grid(True)
+
+    st.pyplot(fig)
+
+# 5. 산점도
+elif chart_menu == "산점도":
+    st.subheader("⚫ 산점도")
+
+    df_scatter = pd.DataFrame(
+        {
+            "X값": np.random.rand(100),
+            "Y값": np.random.rand(100),
+            "크기": np.random.rand(100) * 200,
+            "색상": np.random.rand(100),
+        }
     )
-    .properties(title="Sales and Profit Trends")
-)
 
-# Streamlit에서 차트 출력
-st.altair_chart(chart, use_container_width=True)
+    scatter_chart = (
+        alt.Chart(df_scatter)
+        .mark_circle()
+        .encode(
+            x="X값",
+            y="Y값",
+            size="크기",
+            color="색상",
+            tooltip=["X값", "Y값", "크기"],
+        )
+        .properties(title="산점도 시각화")
+        .interactive()
+    )
 
-
-#####3  데이터 생성
-x = np.arange(0, 10, 0.1)
-y1 = np.sin(x)
-y2 = np.cos(x)
-
-# 옵션 선택 (차트 유형 선택)
-chart_type = st.selectbox(
-    "차트 유형을 선택하세요", ["선 그래프", "막대 그래프", "영역 그래프"]
-)
-
-# 차트 그리기
-fig, ax = plt.subplots(figsize=(10, 6))
-
-if chart_type == "선 그래프":
-    ax.plot(x, y1, label="sin(x)", color="b")
-    ax.plot(x, y2, label="cos(x)", color="r")
-    ax.set_title("Line Charts (Sine & Cosine)")
-    ax.set_xlabel("X")
-    ax.set_ylabel("Y")
-    ax.legend()
-
-elif chart_type == "막대 그래프":
-    ax.bar(x, y1, label="sin(x)", alpha=0.6)
-    ax.bar(x, y2, label="cos(x)", alpha=0.6)
-    ax.set_title("Box Charts (Sine & Cosine)")
-    ax.set_xlabel("X")
-    ax.set_ylabel("Y")
-    ax.legend()
-
-elif chart_type == "영역 그래프":
-    ax.fill_between(x, y1, color="b", alpha=0.3, label="sin(x)")
-    ax.fill_between(x, y2, color="r", alpha=0.3, label="cos(x)")
-    ax.set_title("Area Charts (Sine & Cosine)")
-    ax.set_xlabel("X")
-    ax.set_ylabel("Y")
-    ax.legend()
-
-# 그래프 출력
-st.pyplot(fig)
-
-
-st.title("2.막대 그래프")
-# 딕셔너리 데이터 생성
-data = {"A": 10, "B": 20, "C": 30, "D": 40}
-
-# 막대 그래프 그리기
-st.bar_chart(data)
-
-
-# 데이터 생성
-x = np.arange(0, 10, 0.1)
-y1 = np.sin(x)
-y2 = np.cos(x)
-
-
-st.title("3. 영역 그래프")
-
-# 데이터 생성
-x = np.arange(0, 10, 0.1)
-y1 = np.sin(x)
-y2 = np.cos(x)
-
-# 영역 그래프 그리기
-st.area_chart({"sin(x)": y1, "cos(x)": y2})
-
-st.title("4. 히스토그램")
-# 데이터 생성
-data = np.random.randn(1000)
-
-# 히스토그램 그리기
-st.bar_chart(np.histogram(data, bins=20)[0])
-
-
-st.title("5. 산점도(Scatter Plot)")
-
-# 데이터 생성
-x = np.random.rand(100)
-y = np.random.rand(100)
-
-# 산점도 그리기
-st.scatter_chart({"x": x, "y": y})
+    st.altair_chart(scatter_chart, use_container_width=True)
