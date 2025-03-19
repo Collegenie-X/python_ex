@@ -23,6 +23,7 @@ def main_program():
     index_counter += 1
 
     while True:
+        
         print("\n*** TODO 리스트 관리 프로그램 ***")
         print("1. 할 일 추가")
         print("2. 할 일 수정")

